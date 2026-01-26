@@ -14,5 +14,6 @@ export default function useProducts(productQuery) {
 		getNextPageParam: (lastPage) => {
 			return lastPage.hasNextPage ? lastPage.currentPage + 1 : undefined;
 		},
+		staleTime: 1000 * 60 * 60,
 	});
 }

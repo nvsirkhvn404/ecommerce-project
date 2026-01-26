@@ -22,9 +22,10 @@ export default function ProductCard({ product }) {
 
 	return (
 		<Card className="overflow-hidden">
-			<CardHeader className="bg-gray-100">
-				<img src={product.thumbnail} className="self-center" />
+			<CardHeader className="flex justify-center bg-gray-100">
+				<img src={product.thumbnail} />
 			</CardHeader>
+
 			<CardContent className="space-y-3">
 				<div className="flex space-x-1">
 					<Star className={RATING_COLOR} />
@@ -33,14 +34,17 @@ export default function ProductCard({ product }) {
 					</p>
 				</div>
 				<CardTitle>{product.title}</CardTitle>
-				<div className="flex flex-wrap space-x-3">
+				<div className="flex flex-wrap items-center space-x-3">
 					<p className="font-semibold">${product.price}</p>
-					<strike>${originalProductPrice}</strike>
+					<strike className="text-xs">${originalProductPrice}</strike>
 					<Badge variant="success">{product.discountPercentage}% off</Badge>
 				</div>
 			</CardContent>
+
 			<CardFooter className="mt-auto ">
-				<Button className="flex-1 text-md" variant="outline">Add to cart</Button>
+				<Button className="flex-1 text-md" variant="outline">
+					Add to cart
+				</Button>
 			</CardFooter>
 		</Card>
 	);

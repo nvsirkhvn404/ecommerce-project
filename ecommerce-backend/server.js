@@ -23,7 +23,8 @@ app.get("/api/products", async (req, res) => {
 	try {
 		const query = req.query.q || "";
 		const sortOrder = req.query.sort === "desc" ? -1 : 1;
-		const limit = Number(req.query.limit) || 32;
+		const sortField = req.query.sortField || "rating";
+		const limit = Number(req.query.limit) || 24;
 		const page = Number(req.query.page) || 1;
 		const skip = (page - 1) * limit;
 
@@ -34,7 +35,7 @@ app.get("/api/products", async (req, res) => {
 		const total = await Product.countDocuments(filter);
 
 		const products = await Product.find(filter)
-			.sort({ title: sortOrder })
+			.sort({ [sortField]: sortOrder })
 			.skip(skip)
 			.limit(limit);
 
