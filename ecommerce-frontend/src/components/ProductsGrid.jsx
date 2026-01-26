@@ -1,19 +1,23 @@
 import useProducts from "@/hooks/useProducts";
-import { Fragment, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import ProductCard from "./ProductCard";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 
-export default function ProductsGrid({ sort }) {
+export default function ProductsGrid() {
 	const inputRef = useRef(null);
+	const [sort, setSort] = useState("asc");
 	const [inputValue, setInputValue] = useState("");
 
-	const { data } = useProducts({ sort: sort, q: inputValue });
-	console.log(data);
-	
+	const { data, hasNextPage, fetchNextPage } = useProducts({
+		sort: sort,
+		q: inputValue,
+	});
+
 	return (
-		<>
+		<div className="flex flex-col gap-5 p-10">
 			<form
+				className="flex gap-5"
 				onSubmit={(e) => {
 					e.preventDefault();
 					setInputValue(inputRef.current?.value);
@@ -22,14 +26,23 @@ export default function ProductsGrid({ sort }) {
 				<Input ref={inputRef} />
 				<Button>Search</Button>
 			</form>
+			<Button
+				className="self-start"
+				onClick={() => (sort === "asc" ? setSort("desc") : setSort("asc"))}
+			>
+				{sort}
+			</Button>
 
-			<div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5 p-10">
-				{data?.map((product) => (
-					<Fragment key={product.id}>
-						<ProductCard product={product} />
-					</Fragment>
-				))}
+			<div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5">
+				{data?.pages.map((page) =>
+					page.data.map((product) => (
+						<ProductCard key={product._id} product={product} />
+					)),
+				)}
 			</div>
-		</>
+			{hasNextPage && (
+				<Button onClick={() => fetchNextPage()}>Load More</Button>
+			)}
+		</div>
 	);
 }

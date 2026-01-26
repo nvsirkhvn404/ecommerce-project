@@ -27,14 +27,25 @@ app.get("/api/products", async (req, res) => {
 		const page = Number(req.query.page) || 1;
 		const skip = (page - 1) * limit;
 
-		const products = await Product.find({
+		const filter = {
 			title: { $regex: query, $options: "i" },
-		})
+		};
+
+		const total = await Product.countDocuments(filter);
+
+		const products = await Product.find(filter)
 			.sort({ title: sortOrder })
 			.skip(skip)
 			.limit(limit);
 
-		return res.status(200).json(products);
+		const hasNextPage = skip + products.length < total;
+
+		res.json({
+			data: products,
+			currentPage: page,
+			totalPages: Math.ceil(total / limit),
+			hasNextPage,
+		});
 	} catch (err) {
 		res.status(500).json({ error: err.message });
 	}
