@@ -6,7 +6,7 @@ import SortSection from "./SortSection";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 
-export default function ProductsGrid() {
+export default function ProductsGrid({ cartStorageFn }) {
 	const inputRef = useRef(null);
 	const [sortOrder, setSortOrder] = useState("asc");
 	const [sortField, setSortField] = useState("title");
@@ -17,7 +17,6 @@ export default function ProductsGrid() {
 		sortField,
 		q: inputValue,
 	});
-
 	return (
 		<div className="flex flex-col gap-5 px-10">
 			<form
@@ -37,11 +36,11 @@ export default function ProductsGrid() {
 				sortOrder={sortOrder}
 			/>
 
-			<div className="grid sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-5">
+			<div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-5">
 				{data?.pages.map((page) =>
 					page.data.map((product) => (
 						<motion.div layoutId={product._id} key={product._id}>
-							<ProductCard product={product} />
+							<ProductCard product={product} cartStorageFn={cartStorageFn} />
 						</motion.div>
 					)),
 				)}

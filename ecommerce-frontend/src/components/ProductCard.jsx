@@ -9,7 +9,7 @@ import { Star } from "lucide-react";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
 
-export default function ProductCard({ product }) {
+export default function ProductCard({ product, cartStorageFn }) {
 	const RATING_COLOR =
 		product.rating > 3.5
 			? "text-green-600 fill-green-600"
@@ -22,7 +22,7 @@ export default function ProductCard({ product }) {
 
 	return (
 		<Card className="overflow-hidden">
-			<CardHeader className="flex justify-center bg-gray-100">
+			<CardHeader className="flex justify-center bg-gray-100 min-h-40">
 				<img src={product.thumbnail} />
 			</CardHeader>
 
@@ -41,8 +41,12 @@ export default function ProductCard({ product }) {
 				</div>
 			</CardContent>
 
-			<CardFooter className="mt-auto ">
-				<Button className="flex-1 text-md" variant="outline">
+			<CardFooter className="mt-auto">
+				<Button
+					className="flex-1 text-md"
+					variant="outline"
+					onClick={() => cartStorageFn(product, 1, "add")}
+				>
 					Add to cart
 				</Button>
 			</CardFooter>
