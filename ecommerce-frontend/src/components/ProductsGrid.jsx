@@ -6,7 +6,7 @@ import SortSection from "./SortSection";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 
-export default function ProductsGrid({ cartStorageFn }) {
+export default function ProductsGrid() {
 	const inputRef = useRef(null);
 	const [sortOrder, setSortOrder] = useState("asc");
 	const [sortField, setSortField] = useState("title");
@@ -40,7 +40,7 @@ export default function ProductsGrid({ cartStorageFn }) {
 				{data?.pages.map((page) =>
 					page.data.map((product) => (
 						<motion.div layoutId={product._id} key={product._id}>
-							<ProductCard product={product} cartStorageFn={cartStorageFn} />
+							<ProductCard product={product} />
 						</motion.div>
 					)),
 				)}

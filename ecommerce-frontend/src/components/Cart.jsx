@@ -9,20 +9,30 @@ import {
 	SheetTitle,
 	SheetTrigger,
 } from "@/components/ui/sheet";
+import useLocalCart from "@/store";
+import QuantityControl from "./QuantityControl";
 import { Badge } from "./ui/badge";
 
-export function Cart({ cart, cartStorageFn }) {
+export function Cart() {
+	const { cart, cartFn } = useLocalCart();
 	let subtotal = 0;
 	let totalQuantity = 0;
-	cart.forEach((item) => {
-		subtotal += item.product.price * item.quantity;
-		totalQuantity += item.quantity;
-	});
+	if (cart)
+		cart.forEach((item) => {
+			subtotal += item.product.price * item.quantity;
+			totalQuantity += item.quantity;
+		});
+
 	return (
 		<Sheet>
 			<SheetTrigger asChild>
 				<Button variant="outline">
-					Cart {totalQuantity ? <Badge className="rounded-full">{totalQuantity}</Badge> : ""} 
+					Cart
+					{totalQuantity ? (
+						<Badge className="rounded-full">{totalQuantity}</Badge>
+					) : (
+						""
+					)}
 				</Button>
 			</SheetTrigger>
 			<SheetContent>
@@ -34,38 +44,22 @@ export function Cart({ cart, cartStorageFn }) {
 				</SheetHeader>
 				{cart.length ? (
 					<>
-						<div className="overflow-y-auto  px-2">
+						<div className="overflow-y-auto px-2">
 							{cart.map((item, index) => (
-								<div
-									key={index}
-									className="flex flex-col sm:flex-row justify-between sm:items-center py-2 gap-2 border-b"
-								>
+								<div key={index} className="flex flex-col py-2 gap-2 border-b">
 									<div className="flex items-center gap-2">
 										<img src={item.product.thumbnail} className="h-20" />
 										<div>
 											<p className="font-semibold">{item.product.title}</p>
-											<div className="flex flex-col sm:flex-row space-x-2">
-												<p className="font-semibold">${item.product.price}</p>
-												<p>Quantity: {item.quantity}</p>
-											</div>
+											<p className="font-semibold">${item.product.price}</p>
 										</div>
 									</div>
-									<div className="flex  gap-2">
-										<Button
-											size="sm"
-											variant="destructive"
-											onClick={() => cartStorageFn(item.product, 1, "subtract")}
-										>
-											-
-										</Button>
-										<Button
-											size="sm"
-											variant="outline"
-											onClick={() => cartStorageFn(item.product, 1, "add")}
-										>
-											+
-										</Button>
-									</div>
+									<QuantityControl
+										quantity={item.quantity}
+										stock={item.product.stock}
+										onAdd={() => cartFn(item.product, "ADD")}
+										onSubtract={() => cartFn(item.product, "SUBTRACT")}
+									/>
 								</div>
 							))}
 						</div>
