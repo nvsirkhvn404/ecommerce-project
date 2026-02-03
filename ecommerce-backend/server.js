@@ -2,54 +2,24 @@ import cors from "cors";
 import dotenv from "dotenv";
 import express from "express";
 import mongoose from "mongoose";
-import Product from "./models/Product.js";
+import authRouter from "./routes/auth.js";
+import productsRouter from "./routes/products.js";
 
 dotenv.config();
 const PORT = process.env.PORT || 3000;
 const app = express();
 app.use(express.json());
 app.use(cors());
+app.use(authRouter);
+app.use(productsRouter);
 
 mongoose
 	.connect(process.env.MONGO_URI)
 	.then(() => console.log("MongoDB Connected"))
 	.catch((err) => console.log(err));
 
-app.get("/", async (req, res) => {
+app.get("/", (req, res) => {
 	res.send({ message: "Hi" });
-});
-
-app.get("/api/products", async (req, res) => {
-	try {
-		const query = req.query.q || "";
-		const sortOrder = req.query.sort === "desc" ? -1 : 1;
-		const sortField = req.query.sortField || "rating";
-		const limit = Number(req.query.limit) || 24;
-		const page = Number(req.query.page) || 1;
-		const skip = (page - 1) * limit;
-
-		const filter = {
-			title: { $regex: query, $options: "i" },
-		};
-
-		const total = await Product.countDocuments(filter);
-
-		const products = await Product.find(filter)
-			.sort({ [sortField]: sortOrder })
-			.skip(skip)
-			.limit(limit);
-
-		const hasNextPage = skip + products.length < total;
-
-		res.json({
-			data: products,
-			currentPage: page,
-			totalPages: Math.ceil(total / limit),
-			hasNextPage,
-		});
-	} catch (err) {
-		res.status(500).json({ error: err.message });
-	}
 });
 
 app.listen(PORT, () =>
