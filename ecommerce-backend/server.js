@@ -4,6 +4,7 @@ import express from "express";
 import mongoose from "mongoose";
 import AuthRouter from "./routes/auth.js";
 import ProductsRouter from "./routes/products.js";
+import { requireAuth } from "./utils/middlewares.js";
 
 dotenv.config();
 const PORT = process.env.PORT || 3000;
@@ -21,6 +22,10 @@ mongoose
 app.get("/", (req, res) => {
 	res.send({ message: "Hi" });
 });
+
+app.get("/protected", requireAuth, (req, res) => {
+	res.send({ message: "This route is protected." })
+})
 
 app.listen(PORT, () =>
 	console.log(`Server running on http://localhost:${PORT}`),
