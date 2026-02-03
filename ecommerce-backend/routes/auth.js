@@ -4,7 +4,7 @@ import bcrypt from "bcrypt";
 
 const router = Router();
 
-router.post("/api/auth/login", async (req, res) => {
+router.post("/login", async (req, res) => {
 	const { email, password } = req.body;
 	if (!email || !password)
 		return res.status(400).json({ message: "Provide proper credentials" });
@@ -18,7 +18,7 @@ router.post("/api/auth/login", async (req, res) => {
 	return res.send(user);
 });
 
-router.post("/api/auth/register", async (req, res) => {
+router.post("/register", async (req, res) => {
 	const { name, email, password } = req.body;
 	if (!name || !email || !password)
 		return res.status(400).json({ message: "Provide proper credentials" });

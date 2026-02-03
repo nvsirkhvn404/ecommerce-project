@@ -3,7 +3,7 @@ import Product from "../models/Product.js";
 
 const router = Router()
 
-router.get("/api/products", async (req, res) => {
+router.get("/", async (req, res) => {
 	try {
 		const query = req.query.q || "";
 		const sortOrder = req.query.sort === "desc" ? -1 : 1;
