@@ -31,6 +31,7 @@ export default function ProductCard({ product }) {
 
 	return (
 		<motion.div
+			layoutId={product._id} 
 			initial={{ opacity: 0, y: 20 }}
 			animate={{ opacity: 1, y: 0 }}
 			transition={{ duration: 0.4, ease: "easeOut" }}
@@ -61,7 +62,7 @@ export default function ProductCard({ product }) {
 					</div>
 				</CardContent>
 
-				<CardFooter className="mt-auto">
+				<CardFooter className="mt-auto flex justify-center">
 					<AnimatePresence mode="wait">
 						{currentCart ? (
 							<motion.div

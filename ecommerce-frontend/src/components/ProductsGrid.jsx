@@ -1,5 +1,4 @@
 import useProducts from "@/hooks/useProducts";
-import { motion } from "motion/react";
 import { useRef, useState } from "react";
 import ProductCard from "./ProductCard";
 import SortSection from "./SortSection";
@@ -39,9 +38,7 @@ export default function ProductsGrid() {
 			<div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-5">
 				{data?.pages.map((page) =>
 					page.data.map((product) => (
-						<motion.div layoutId={product._id} key={product._id}>
-							<ProductCard product={product} />
-						</motion.div>
+							<ProductCard product={product} key={product._id} />
 					)),
 				)}
 			</div>

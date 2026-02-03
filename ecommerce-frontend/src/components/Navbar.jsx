@@ -4,12 +4,15 @@ import ThemeToggle from "./ui/ThemeToggle";
 
 export default function Navbar() {
 	return (
-		<div className="flex justify-between items-center px-10 py-5 border">
-			<Link to="/">Sahara</Link>
-			<div className="flex justify-between items-center gap-5">
-				<ThemeToggle />
-				<Cart />
-			</div>
+		<div className=" flex flex-col items-center fixed top-5 inset-x-0 z-50">
+			<nav className="flex items-center py-4 px-10 w-full max-w-3xl justify-between border rounded-full bg-background/70 backdrop-blur-2xl">
+				<Link to="/">Sahara</Link>
+				<div className="flex justify-between items-center gap-5">
+					<ThemeToggle />
+					<Cart />
+					<Link to="/login">Login</Link>
+				</div>
+			</nav>
 		</div>
 	);
 }
