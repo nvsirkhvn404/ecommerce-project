@@ -1,19 +1,19 @@
+import FormError from "@/components/FormErrorMessage";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Link } from "react-router";
 import {
 	Card,
 	CardContent,
 	CardFooter,
 	CardHeader,
 } from "@/components/ui/card";
-import { useForm } from "react-hook-form";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { registerValidationSchema } from "@/validation/authValidationSchemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
-import { X } from "lucide-react";
 import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { Link } from "react-router";
 
 export default function RegisterPage() {
 	const [serverError, setServerError] = useState(null);
@@ -54,19 +54,11 @@ export default function RegisterPage() {
 
 				<CardContent>
 					<form className="space-y-5" onSubmit={handleSubmit(onSubmit)}>
-						{serverError && (
-							<div className="flex justify-between items-center px-2 py-1 bg-red-400 text-red-600 border border-red-600 rounded-lg text-sm">
-								<p>{serverError}</p>
-								<Button
-									onClick={() => setServerError(null)}
-									variant="ghost"
-									size="xs"
-									type="button"
-								>
-									<X />
-								</Button>
-							</div>
-						)}
+						<FormError
+							error={serverError}
+							errorMessage={serverError}
+							errorClearFn={() => setServerError(null)}
+						/>
 						<div className="space-y-2">
 							<Label htmlFor="name">Name</Label>
 							<Input
@@ -77,19 +69,11 @@ export default function RegisterPage() {
 								{...register("name")}
 							/>
 
-							{errors.name && (
-								<div className="flex justify-between items-center px-2 py-1 bg-red-400 text-red-600 border border-red-600 rounded-lg text-sm">
-									<p>{errors.name?.message}</p>
-									<Button
-										onClick={() => clearErrors("name")}
-										variant="ghost"
-										size="xs"
-										type="button"
-									>
-										<X />
-									</Button>
-								</div>
-							)}
+							<FormError
+								error={errors.name}
+								errorMessage={errors.name?.message}
+								errorClearFn={() => clearErrors("name")}
+							/>
 						</div>
 
 						<div className="space-y-2">
@@ -101,19 +85,11 @@ export default function RegisterPage() {
 								{...register("email")}
 							/>
 
-							{errors.email && (
-								<div className="flex justify-between items-center px-2 py-1 bg-red-400 text-red-600 border border-red-600 rounded-lg text-sm">
-									<p>{errors.email?.message}</p>
-									<Button
-										onClick={() => clearErrors("email")}
-										variant="ghost"
-										size="xs"
-										type="button"
-									>
-										<X />
-									</Button>
-								</div>
-							)}
+							<FormError
+								error={errors.email}
+								errorMessage={errors.email?.message}
+								errorClearFn={() => clearErrors("email")}
+							/>
 						</div>
 
 						<div className="space-y-2">
@@ -125,19 +101,11 @@ export default function RegisterPage() {
 								{...register("password")}
 							/>
 
-							{errors.password && (
-								<div className="flex justify-between items-center px-2 py-1 bg-red-400 text-red-600 border border-red-600 rounded-lg text-sm">
-									<p>{errors.password?.message}</p>
-									<Button
-										onClick={() => clearErrors("password")}
-										variant="ghost"
-										size="xs"
-										type="button"
-									>
-										<X />
-									</Button>
-								</div>
-							)}
+							<FormError
+								error={errors.password}
+								errorMessage={errors.password?.message}
+								errorClearFn={() => clearErrors("password")}
+							/>
 						</div>
 
 						<Button className="w-full" disabled={isSubmitting} type="submit">

@@ -1,3 +1,4 @@
+import FormError from "@/components/FormErrorMessage";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -5,7 +6,6 @@ import { Label } from "@/components/ui/label";
 import { loginValidationSchema } from "@/validation/authValidationSchemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
-import { X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router";
@@ -48,19 +48,11 @@ export default function LoginPage() {
 
 				<CardContent>
 					<form className="space-y-5" onSubmit={handleSubmit(onSubmit)}>
-						{serverError && (
-							<div className="flex justify-between items-center px-2 py-1 bg-red-400 text-red-600 border border-red-600 rounded-lg text-sm">
-								<p>{serverError}</p>
-								<Button
-									onClick={() => setServerError(null)}
-									variant="ghost"
-									size="xs"
-									type="button"
-								>
-									<X />
-								</Button>
-							</div>
-						)}
+						<FormError
+							error={serverError}
+							errorMessage={serverError}
+							errorClearFn={() => setServerError(null)}
+						/>
 						<div className="space-y-2">
 							<Label htmlFor="email">Email</Label>
 							<Input
@@ -70,19 +62,11 @@ export default function LoginPage() {
 								{...register("email")}
 							/>
 
-							{errors.email && (
-								<div className="flex justify-between items-center px-2 py-1 bg-red-400 text-red-600 border border-red-600 rounded-lg text-sm">
-									<p>{errors.email?.message}</p>
-									<Button
-										onClick={() => clearErrors("email")}
-										variant="ghost"
-										size="xs"
-										type="button"
-									>
-										<X />
-									</Button>
-								</div>
-							)}
+							<FormError
+								error={errors.email}
+								errorMessage={errors.email?.message}
+								errorClearFn={() => clearErrors("email")}
+							/>
 						</div>
 
 						<div className="space-y-2">
@@ -94,19 +78,11 @@ export default function LoginPage() {
 								{...register("password")}
 							/>
 
-							{errors.password && (
-								<div className="flex justify-between items-center px-2 py-1 bg-red-400 text-red-600 border border-red-600 rounded-lg text-sm">
-									<p>{errors.password?.message}</p>
-									<Button
-										onClick={() => clearErrors("password")}
-										variant="ghost"
-										size="xs"
-										type="button"
-									>
-										<X />
-									</Button>
-								</div>
-							)}
+							<FormError
+								error={errors.password}
+								errorMessage={errors.password?.message}
+								errorClearFn={() => clearErrors("password")}
+							/>
 						</div>
 
 						<Button className="w-full" disabled={isSubmitting} type="submit">
