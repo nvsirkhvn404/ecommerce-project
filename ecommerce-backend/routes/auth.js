@@ -43,23 +43,23 @@ router.post(
 		try {
 			const { name, email, password } = req.body;
 
-			const user = await User.findOne({ email: email });
-			if (user) return res.status(409).json({ message: "User Already exists" });
+			const exists = await User.findOne({ email: email });
+			if (exists) return res.status(409).json({ message: "User Already exists" });
 
 			const hashedPassword = await bcrypt.hash(password, 10);
-			const newUser = await User.create({
+			const user = await User.create({
 				name,
 				email,
 				password: hashedPassword,
 			});
 
-			const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET, {
+			const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
 				expiresIn: "7d",
 			});
 
 			return res
 				.status(201)
-				.json({ message: "Registration Successful", token, newUser });
+				.json({ message: "Registration Successful", token, user });
 		} catch (err) {
 			console.log(err);
 			res.status(500).json({ message: "Server error" });
