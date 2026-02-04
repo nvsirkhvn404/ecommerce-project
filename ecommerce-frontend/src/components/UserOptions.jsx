@@ -7,23 +7,22 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import useUser from "@/hooks/useUser";
 import { LogOutIcon } from "lucide-react";
 import { Link } from "react-router";
 
 export default function UserOptions() {
-	const auth = JSON.parse(localStorage.getItem("user"));
+	const { data } = useUser();
 
 	return (
 		<>
-			{auth ? (
+			{data ? (
 				<DropdownMenu>
 					<DropdownMenuTrigger asChild>
 						<Button variant="ghost" size="icon" className="rounded-full">
 							<Avatar>
 								<AvatarImage src="https://ghub.com/shan.png" alt="shadcn" />
-								<AvatarFallback>
-									{auth.user.name[0].toUpperCase()}
-								</AvatarFallback>
+								<AvatarFallback>{data.name[0].toUpperCase()}</AvatarFallback>
 							</Avatar>
 						</Button>
 					</DropdownMenuTrigger>
@@ -46,10 +45,7 @@ export default function UserOptions() {
 					</DropdownMenuContent>
 				</DropdownMenu>
 			) : (
-				<div className="flex gap-2">
-					<Link to="/login">Login</Link>
-					<Link to="/register">Register</Link>
-				</div>
+				<Link to="/login">Login</Link>
 			)}
 		</>
 	);

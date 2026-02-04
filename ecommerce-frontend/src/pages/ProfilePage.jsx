@@ -1,5 +1,7 @@
+import useUser from "@/hooks/useUser";
+
 export default function ProfilePage() {
-	const auth = JSON.parse(localStorage.getItem("user"));
+	const { data } = useUser();
 
 	return (
 		<div className="p-10">
@@ -7,11 +9,11 @@ export default function ProfilePage() {
 
 			<div className="space-y-2">
 				<p>
-					<strong>Name:</strong> {auth.user.name}
+					<strong>Name:</strong> {data?.name}
 				</p>
 
 				<p>
-					<strong>Email:</strong> {auth.user.email}
+					<strong>Email:</strong> {data?.email}
 				</p>
 			</div>
 		</div>

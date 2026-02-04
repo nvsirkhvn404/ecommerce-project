@@ -1,7 +1,7 @@
 import { Router } from "express";
 import User from "../models/User.js";
 import bcrypt from "bcrypt";
-import { validateBody } from "../utils/middlewares.js";
+import { requireAuth, validateBody } from "../utils/middlewares.js";
 import {
 	loginValidationSchema,
 	registerValidationSchema,
@@ -67,5 +67,15 @@ router.post(
 		}
 	},
 );
+
+router.get("/user", requireAuth, async (req, res) => {
+	try {
+		const user = await User.findById(req.userId).select("-password");
+		return res.status(200).json(user);
+	} catch (err) {
+		console.log(err);
+		res.status(500).json({ message: "Server error" });
+	}
+});
 
 export default router;
